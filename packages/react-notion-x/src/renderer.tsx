@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import mediumZoom from '@fisch0920/medium-zoom'
-import { ExtendedRecordMap } from 'notion-types'
+import { Block as BlockType, ExtendedRecordMap } from 'notion-types'
 
 import { Block } from './block'
 import { NotionContextProvider, useNotionContext } from './context'
@@ -11,6 +11,7 @@ import {
   NotionComponents,
   SearchNotionFn
 } from './types'
+import { cs } from './utils'
 
 export const NotionRenderer: React.FC<{
   recordMap: ExtendedRecordMap
@@ -19,8 +20,6 @@ export const NotionRenderer: React.FC<{
   mapPageUrl?: MapPageUrlFn
   mapImageUrl?: MapImageUrlFn
   searchNotion?: SearchNotionFn
-  isShowingSearch?: boolean
-  onHideSearch?: () => void
 
   rootPageId?: string
   rootDomain?: string
@@ -34,8 +33,6 @@ export const NotionRenderer: React.FC<{
   forceCustomImages?: boolean
   showCollectionViewDropdown?: boolean
   linkTableTitleProperties?: boolean
-  isLinkCollectionToUrlProperty?: boolean
-  isImageZoomable?: boolean
 
   showTableOfContents?: boolean
   minTableOfContentsItems?: number
@@ -64,8 +61,6 @@ export const NotionRenderer: React.FC<{
   mapPageUrl,
   mapImageUrl,
   searchNotion,
-  isShowingSearch,
-  onHideSearch,
   fullPage,
   rootPageId,
   rootDomain,
@@ -74,8 +69,6 @@ export const NotionRenderer: React.FC<{
   forceCustomImages,
   showCollectionViewDropdown,
   linkTableTitleProperties,
-  isLinkCollectionToUrlProperty,
-  isImageZoomable = true,
   showTableOfContents,
   minTableOfContentsItems,
   defaultPageIcon,
@@ -101,8 +94,6 @@ export const NotionRenderer: React.FC<{
       mapPageUrl={mapPageUrl}
       mapImageUrl={mapImageUrl}
       searchNotion={searchNotion}
-      isShowingSearch={isShowingSearch}
-      onHideSearch={onHideSearch}
       fullPage={fullPage}
       rootPageId={rootPageId}
       rootDomain={rootDomain}
@@ -111,13 +102,12 @@ export const NotionRenderer: React.FC<{
       forceCustomImages={forceCustomImages}
       showCollectionViewDropdown={showCollectionViewDropdown}
       linkTableTitleProperties={linkTableTitleProperties}
-      isLinkCollectionToUrlProperty={isLinkCollectionToUrlProperty}
       showTableOfContents={showTableOfContents}
       minTableOfContentsItems={minTableOfContentsItems}
       defaultPageIcon={defaultPageIcon}
       defaultPageCover={defaultPageCover}
       defaultPageCoverPosition={defaultPageCoverPosition}
-      zoom={isImageZoomable ? zoom : null}
+      zoom={zoom}
     >
       <NotionBlockRenderer {...rest} />
     </NotionContextProvider>
@@ -149,16 +139,89 @@ export const NotionBlockRenderer: React.FC<{
 
   return (
     <Block key={id} level={level} block={block} {...props}>
-      {block?.content?.map((contentBlockId) => (
-        <NotionBlockRenderer
-          key={contentBlockId}
-          blockId={contentBlockId}
-          level={level + 1}
-          {...props}
-        />
-      ))}
+      <BlockChildrenRenderer level={level} block={block} {...props} />
     </Block>
   )
+}
+
+const BlockChildrenRenderer: React.FC<{
+  className?: string
+  bodyClassName?: string
+  header?: React.ReactNode
+  footer?: React.ReactNode
+  disableHeader?: boolean
+
+  block: BlockType
+  hideBlockId?: boolean
+  level?: number
+}> = ({ level, block, ...props }) => {
+  const { recordMap } = useNotionContext()
+  const contentNodes = []
+
+  if (!block.content) {
+    return <></>
+  }
+
+  const wrapList = (nextChildBlockType, content: React.ReactElement[]) => {
+    if (nextChildBlockType === 'bulleted_list') {
+      return (
+        <ul key={block.id} className={cs('notion-list', 'notion-list-disc')}>
+          {content}
+        </ul>
+      )
+    } else {
+      return (
+        <ol
+          key={block.id}
+          className={cs('notion-list', 'notion-list-numbered')}
+        >
+          {content}
+        </ol>
+      )
+    }
+  }
+
+  for (let i = 0; i < block.content.length; ) {
+    const nextChildBlock = recordMap.block[block.content[i]]?.value
+    const nextChildBlockType = nextChildBlock?.type
+
+    let nextChildGroup = [block.content[i]]
+    if (
+      nextChildBlockType === 'bulleted_list' ||
+      nextChildBlockType === 'numbered_list'
+    ) {
+      let j = i
+      while (
+        j < block.content.length &&
+        recordMap.block[block.content[j]]?.value?.type === nextChildBlockType
+      ) {
+        j++
+      }
+      nextChildGroup = block.content.slice(i, j)
+    }
+
+    const nextRenderedGroup = nextChildGroup.map((nextChildId) => (
+      <NotionBlockRenderer
+        key={nextChildId}
+        blockId={nextChildId}
+        level={level + 1}
+        {...props}
+      />
+    ))
+
+    if (
+      nextChildBlockType === 'bulleted_list' ||
+      nextChildBlockType === 'numbered_list'
+    ) {
+      contentNodes.push(wrapList(nextChildBlockType, nextRenderedGroup))
+    } else {
+      contentNodes.push(...nextRenderedGroup)
+    }
+
+    i += nextChildGroup.length
+  }
+
+  return <>{contentNodes}</>
 }
 
 function getMediumZoomMargin() {

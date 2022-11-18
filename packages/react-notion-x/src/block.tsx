@@ -23,7 +23,7 @@ import { SyncPointerBlock } from './components/sync-pointer-block'
 import { Text } from './components/text'
 import { useNotionContext } from './context'
 import { LinkIcon } from './icons/link-icon'
-import { cs, getListNumber, isUrl } from './utils'
+import { cs, isUrl } from './utils'
 
 interface BlockProps {
   block: types.Block
@@ -360,7 +360,7 @@ export const Block: React.FC<BlockProps> = (props) => {
           </span>
         </span>
       )
-      let headerBlock = null
+      let headerBlock
 
       //page title takes the h1 so all header blocks are greater
       if (isH1) {
@@ -406,7 +406,7 @@ export const Block: React.FC<BlockProps> = (props) => {
       const blockColor = block.format?.block_color
 
       return (
-        <div
+        <p
           className={cs(
             'notion-text',
             blockColor && `notion-${blockColor}`,
@@ -417,54 +417,24 @@ export const Block: React.FC<BlockProps> = (props) => {
             <Text value={block.properties.title} block={block} />
           )}
 
-          {children && <div className='notion-text-children'>{children}</div>}
-        </div>
+          {children && <p className='notion-text-children'>{children}</p>}
+        </p>
       )
     }
 
     case 'bulleted_list':
     // fallthrough
     case 'numbered_list': {
-      const wrapList = (content: React.ReactNode, start?: number) =>
-        block.type === 'bulleted_list' ? (
-          <ul className={cs('notion-list', 'notion-list-disc', blockId)}>
-            {content}
-          </ul>
-        ) : (
-          <ol
-            start={start}
-            className={cs('notion-list', 'notion-list-numbered', blockId)}
-          >
-            {content}
-          </ol>
-        )
-
-      let output: JSX.Element | null = null
-
-      if (block.content) {
-        output = (
-          <>
-            {block.properties && (
-              <li>
-                <Text value={block.properties.title} block={block} />
-              </li>
-            )}
-            {wrapList(children)}
-          </>
-        )
-      } else {
-        output = block.properties ? (
-          <li>
-            <Text value={block.properties.title} block={block} />
-          </li>
-        ) : null
-      }
-
-      const isTopLevel =
-        block.type !== recordMap.block[block.parent_id]?.value?.type
-      const start = getListNumber(block.id, recordMap.block)
-
-      return isTopLevel ? wrapList(output, start) : output
+      return (
+        <>
+          {block.properties && (
+            <li className={cs(blockId)}>
+              <Text value={block.properties.title} block={block} />
+              {children}
+            </li>
+          )}
+        </>
+      )
     }
 
     case 'embed':
@@ -565,10 +535,7 @@ export const Block: React.FC<BlockProps> = (props) => {
             blockId
           )}
         >
-          <div>
-            <Text value={block.properties.title} block={block} />
-          </div>
-          {children}
+          <Text value={block.properties.title} block={block} />
         </blockquote>
       )
     }
