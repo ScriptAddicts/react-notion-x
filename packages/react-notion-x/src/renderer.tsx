@@ -162,17 +162,21 @@ const BlockChildrenRenderer: React.FC<{
     return <></>
   }
 
-  const wrapList = (nextChildBlockType, content: React.ReactElement[]) => {
+  const wrapList = (
+    nextChildId,
+    nextChildBlockType,
+    content: React.ReactElement[]
+  ) => {
     if (nextChildBlockType === 'bulleted_list') {
       return (
-        <ul key={block.id} className={cs('notion-list', 'notion-list-disc')}>
+        <ul key={nextChildId} className={cs('notion-list', 'notion-list-disc')}>
           {content}
         </ul>
       )
     } else {
       return (
         <ol
-          key={block.id}
+          key={nextChildId}
           className={cs('notion-list', 'notion-list-numbered')}
         >
           {content}
@@ -213,7 +217,9 @@ const BlockChildrenRenderer: React.FC<{
       nextChildBlockType === 'bulleted_list' ||
       nextChildBlockType === 'numbered_list'
     ) {
-      contentNodes.push(wrapList(nextChildBlockType, nextRenderedGroup))
+      contentNodes.push(
+        wrapList(nextChildBlock.id, nextChildBlockType, nextRenderedGroup)
+      )
     } else {
       contentNodes.push(...nextRenderedGroup)
     }

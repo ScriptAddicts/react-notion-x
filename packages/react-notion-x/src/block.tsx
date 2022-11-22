@@ -416,8 +416,6 @@ export const Block: React.FC<BlockProps> = (props) => {
           {block.properties?.title && (
             <Text value={block.properties.title} block={block} />
           )}
-
-          {children && <p className='notion-text-children'>{children}</p>}
         </p>
       )
     }
