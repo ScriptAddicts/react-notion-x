@@ -1,5 +1,4 @@
-{
-  "name": "react-notion-x",
+{ "name": "react-notion-x",
   "version": "6.15.9",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
@@ -50,5 +49,6 @@
   "peerDependencies": {
     "react": ">=16",
     "react-dom": ">=16"
-  }
+  },
+  "gitHead": "e0f3bb4c5610ea8472ed3ea9ccae46c1bc503dec"
 }
