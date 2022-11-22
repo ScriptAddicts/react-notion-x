@@ -1,6 +1,6 @@
 {
   "name": "@package_holder/react-notion-x",
-  "version": "6.15.15",
+  "version": "6.15.16",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
   "publichConfig": {
