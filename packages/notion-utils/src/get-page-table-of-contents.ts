@@ -15,6 +15,7 @@ const indentLevels = {
   sub_sub_header: 2
 }
 
+console.log("TEST")
 /**
  * Gets the metadata for a table of contents block by parsing the page's
  * H1, H2, and H3 elements.
