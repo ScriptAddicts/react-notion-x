@@ -3,6 +3,9 @@
   "version": "6.15.13",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
+	"publichConfig": {
+		"access": "public",
+	},
   "repository": "ScriptAddicts/react-notion-x",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
