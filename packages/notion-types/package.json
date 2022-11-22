@@ -1,9 +1,9 @@
 {
-  "name": "notion-types",
+  "name": "@scriptaddicts/notion-types",
   "version": "6.15.4",
   "type": "module",
   "description": "TypeScript types for core Notion data structures.",
-  "repository": "NotionX/react-notion-x",
+  "repository": "ScriptAddicts/react-notion-x",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "types": "./build/index.d.ts",
@@ -13,5 +13,6 @@
   ],
   "engines": {
     "node": ">=12"
-  }
+  },
+  "gitHead": "c54ed390dd1601bcc2eb8bd3abd7fd610975c89c"
 }

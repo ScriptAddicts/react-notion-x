@@ -1,9 +1,9 @@
 {
-  "name": "notion-utils",
+  "name": "@scriptaddicts/notion-utils",
   "version": "6.15.4",
   "type": "module",
   "description": "Useful utilities for working with Notion data. Isomorphic.",
-  "repository": "NotionX/react-notion-x",
+  "repository": "ScriptAddicts/react-notion-x",
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "main": "./build/index.js",
@@ -44,5 +44,6 @@
       "--no-warnings",
       "--experimental-specifier-resolution=node"
     ]
-  }
+  },
+  "gitHead": "c54ed390dd1601bcc2eb8bd3abd7fd610975c89c"
 }
