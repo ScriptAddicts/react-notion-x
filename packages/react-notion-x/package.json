@@ -1,5 +1,5 @@
 {
-  "name": "react-notion-x",
+  "name": "@scriptaddicts/react-notion-x",
   "version": "6.15.12",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
@@ -51,5 +51,5 @@
     "react": ">=16",
     "react-dom": ">=16"
   },
-  "gitHead": "a11c0bb21150de45ec13f6d3393d4ebe23accd96"
+  "gitHead": "ac154ee99b8fe74f535f3f7cb19b006022e0d50c"
 }
