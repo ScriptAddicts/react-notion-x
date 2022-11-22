@@ -1,6 +1,6 @@
 {
   "name": "@scriptaddicts/react-notion-x",
-  "version": "6.15.12",
+  "version": "6.15.13",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
   "repository": "ScriptAddicts/react-notion-x",
