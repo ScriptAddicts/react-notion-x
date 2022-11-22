@@ -1,5 +1,5 @@
 {
-  "name": "@scriptaddicts/react-notion-x",
+  "name": "@package_holder/react-notion-x",
   "version": "6.15.13",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
