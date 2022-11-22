@@ -6,3 +6,5 @@ export * from './context'
 export * from './components/text'
 export * from './components/header'
 export * from './components/page-icon'
+
+console.log('hello')

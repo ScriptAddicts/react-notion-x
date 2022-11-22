@@ -1,5 +1,5 @@
 {
-  "name": "notion",
+  "name": "@scriptaddicts/notion",
   "version": "1.0.0",
   "private": true,
   "description": "Fast and accurate React renderer for Notion. TS batteries included.",
