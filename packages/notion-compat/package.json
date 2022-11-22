@@ -1,6 +1,6 @@
 {
   "name": "@scriptaddicts/notion-compat",
-  "version": "6.15.5",
+  "version": "6.15.14",
   "type": "module",
   "description": "Compatibility layer between the official Notion API and unofficial private API.",
   "repository": "ScriptAddicts/react-notion-x",

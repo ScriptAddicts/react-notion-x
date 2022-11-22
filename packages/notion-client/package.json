@@ -1,6 +1,6 @@
 {
   "name": "@scriptaddicts/notion-client",
-  "version": "6.15.5",
+  "version": "6.15.14",
   "type": "module",
   "description": "Robust TypeScript client for the unofficial Notion API.",
   "repository": "ScriptAddicts/react-notion-x",

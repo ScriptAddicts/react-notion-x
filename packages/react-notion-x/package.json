@@ -1,12 +1,12 @@
 {
   "name": "@package_holder/react-notion-x",
-  "version": "6.15.13",
+  "version": "6.15.14",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
-	"publichConfig": {
-		"access": "public",
-		"url": "ScriptAddicts/react-notion-x"
-	},
+  "publichConfig": {
+    "access": "public",
+    "url": "ScriptAddicts/react-notion-x"
+  },
   "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "main": "./build/index.js",
