@@ -102,7 +102,7 @@ export const Block: React.FC<BlockProps> = (props) => {
     ? 'notion-block'
     : `notion-block-${uuidToId(block.id)}`
 
-  switch (block.type) {
+  switch (block.type as string) {
     case 'collection_view_page':
     // fallthrough
     case 'page':
@@ -197,21 +197,23 @@ export const Block: React.FC<BlockProps> = (props) => {
                       bodyClassName
                     )}
                   >
-                    {page_icon && (
-                      <PageIcon
-                        block={block}
-                        defaultIcon={defaultPageIcon}
-                        inline={false}
-                      />
-                    )}
-
-                    {pageHeader}
-
-                    <h1 className='notion-title'>
-                      {pageTitle ?? (
-                        <Text value={properties?.title} block={block} />
+                    <header>
+                      {page_icon && (
+                        <PageIcon
+                          block={block}
+                          defaultIcon={defaultPageIcon}
+                          inline={false}
+                        />
                       )}
-                    </h1>
+
+                      {pageHeader}
+
+                      <h1 className='notion-title'>
+                        {pageTitle ?? (
+                          <Text value={properties?.title} block={block} />
+                        )}
+                      </h1>
+                    </header>
 
                     {(block.type === 'collection_view_page' ||
                       (block.type === 'page' &&
@@ -420,6 +422,13 @@ export const Block: React.FC<BlockProps> = (props) => {
       )
     }
 
+    case 'wrapper_numbered_list': {
+      return <ol>{children}</ol>
+    }
+    case 'wrapper_bulleted_list': {
+      return <ul>{children}</ul>
+    }
+
     case 'bulleted_list':
     // fallthrough
     case 'numbered_list': {
@@ -428,7 +437,10 @@ export const Block: React.FC<BlockProps> = (props) => {
           {block.properties && (
             <li className={cs(blockId)}>
               <Text value={block.properties.title} block={block} />
-              {children}
+              {children['props']?.block.content &&
+                block.type === 'bulleted_list' && <ul>{children}</ul>}
+              {children['props']?.block.content &&
+                block.type === 'numbered_list' && <ol>{children}</ol>}
             </li>
           )}
         </>

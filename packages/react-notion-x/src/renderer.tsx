@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import mediumZoom from '@fisch0920/medium-zoom'
 import { Block as BlockType, ExtendedRecordMap } from 'notion-types'
+import { v4 as uuidv4 } from 'uuid'
 
 import { Block } from './block'
 import { NotionContextProvider, useNotionContext } from './context'
@@ -11,7 +12,6 @@ import {
   NotionComponents,
   SearchNotionFn
 } from './types'
-import { cs } from './utils'
 
 export const NotionRenderer: React.FC<{
   recordMap: ExtendedRecordMap
@@ -87,10 +87,72 @@ export const NotionRenderer: React.FC<{
     []
   )
 
+  const wrappedRecordMap = structuredClone(recordMap)
+
+  let firstKey = ''
+
+  for (const prop in wrappedRecordMap.block) {
+    firstKey = prop
+    break
+  }
+
+  // take the main block .value.content (array of block ids)
+  const origContentArray = wrappedRecordMap.block[firstKey].value.content
+  wrappedRecordMap.block[firstKey].value.content = []
+
+  // state of loop
+  let inAList = false
+  let listType = ''
+  let newParentUUID = ''
+
+  // for each item
+  for (const i in origContentArray) {
+    const currentItemKey = origContentArray[i]
+    const currentItemObj = wrappedRecordMap.block[currentItemKey]
+
+    // if it is a list_item
+    if (
+      currentItemObj.value.type === 'numbered_list' ||
+      currentItemObj.value.type === 'bulleted_list'
+    ) {
+      // first time? create a new block wrapper_numbered_list with custom ID
+      if (!inAList || listType !== currentItemObj.value.type) {
+        newParentUUID = uuidv4()
+
+        const newBlock = structuredClone(currentItemObj)
+        newBlock.value.id = newParentUUID
+        newBlock.value.type = 'wrapper_' + currentItemObj.value.type
+        newBlock.value.properties = {}
+        newBlock.value.content = []
+
+        wrappedRecordMap.block[newBlock.value.id] = newBlock
+
+        // add the custom ID to wrapped new .value.content
+        wrappedRecordMap.block[firstKey].value.content.push(newBlock.value.id)
+      }
+
+      // set state machine 'in a list' = true
+      inAList = true
+      listType = currentItemObj.value.type
+
+      // if 'in a list', change the .value.parent_id (incl. for the first one)
+      if (inAList && currentItemObj.value.parent_id === firstKey) {
+        currentItemObj.value.parent_id = newParentUUID
+        wrappedRecordMap.block[newParentUUID].value.content.push(currentItemKey)
+      }
+    } else {
+      // set 'in a list' to false
+      inAList = false
+      newParentUUID = ''
+      // add the id to the wrapped new .value.content
+      wrappedRecordMap.block[firstKey].value.content.push(currentItemKey)
+    }
+  }
+
   return (
     <NotionContextProvider
       components={components}
-      recordMap={recordMap}
+      recordMap={wrappedRecordMap}
       mapPageUrl={mapPageUrl}
       mapImageUrl={mapImageUrl}
       searchNotion={searchNotion}
@@ -162,27 +224,8 @@ const BlockChildrenRenderer: React.FC<{
     return <></>
   }
 
-  const wrapList = (
-    nextChildId,
-    nextChildBlockType,
-    content: React.ReactElement[]
-  ) => {
-    if (nextChildBlockType === 'bulleted_list') {
-      return (
-        <ul key={nextChildId} className={cs('notion-list', 'notion-list-disc')}>
-          {content}
-        </ul>
-      )
-    } else {
-      return (
-        <ol
-          key={nextChildId}
-          className={cs('notion-list', 'notion-list-numbered')}
-        >
-          {content}
-        </ol>
-      )
-    }
+  const wrapSection = (nextChildId, content: React.ReactElement[]) => {
+    return <section key={nextChildId}>{content}</section>
   }
 
   for (let i = 0; i < block.content.length; ) {
@@ -190,14 +233,12 @@ const BlockChildrenRenderer: React.FC<{
     const nextChildBlockType = nextChildBlock?.type
 
     let nextChildGroup = [block.content[i]]
-    if (
-      nextChildBlockType === 'bulleted_list' ||
-      nextChildBlockType === 'numbered_list'
-    ) {
-      let j = i
+
+    if (nextChildBlockType === 'header') {
+      let j = i + 1
       while (
         j < block.content.length &&
-        recordMap.block[block.content[j]]?.value?.type === nextChildBlockType
+        recordMap.block[block.content[j]]?.value?.type !== 'header'
       ) {
         j++
       }
@@ -213,13 +254,8 @@ const BlockChildrenRenderer: React.FC<{
       />
     ))
 
-    if (
-      nextChildBlockType === 'bulleted_list' ||
-      nextChildBlockType === 'numbered_list'
-    ) {
-      contentNodes.push(
-        wrapList(nextChildBlock.id, nextChildBlockType, nextRenderedGroup)
-      )
+    if (nextChildBlockType === 'header') {
+      contentNodes.push(wrapSection(nextChildBlock.id, nextRenderedGroup))
     } else {
       contentNodes.push(...nextRenderedGroup)
     }
