@@ -197,56 +197,56 @@ export const Block: React.FC<BlockProps> = (props) => {
                       bodyClassName
                     )}
                   >
-                    <header>
-                      {page_icon && (
-                        <PageIcon
-                          block={block}
-                          defaultIcon={defaultPageIcon}
-                          inline={false}
-                        />
-                      )}
-
-                      {pageHeader}
-
-                      <h1 className='notion-title'>
-                        {pageTitle ?? (
-                          <Text value={properties?.title} block={block} />
-                        )}
-                      </h1>
-                    </header>
-
-                    {(block.type === 'collection_view_page' ||
-                      (block.type === 'page' &&
-                        block.parent_table === 'collection')) && (
-                      <components.Collection block={block} ctx={ctx} />
-                    )}
-
-                    {block.type !== 'collection_view_page' && (
-                      <div
-                        className={cs(
-                          'notion-page-content',
-                          hasAside && 'notion-page-content-has-aside',
-                          hasToc && 'notion-page-content-has-toc'
-                        )}
-                      >
-                        <article className='notion-page-content-inner'>
-                          {children}
-                        </article>
-
-                        {hasAside && (
-                          <PageAside
-                            toc={toc}
-                            activeSection={activeSection}
-                            setActiveSection={setActiveSection}
-                            hasToc={hasToc}
-                            hasAside={hasAside}
-                            pageAside={pageAside}
+                    <article>
+                      <header>
+                        {page_icon && (
+                          <PageIcon
+                            block={block}
+                            defaultIcon={defaultPageIcon}
+                            inline={false}
                           />
                         )}
-                      </div>
-                    )}
 
-                    {pageFooter}
+                        {pageHeader}
+
+                        <h1 className='notion-title'>
+                          {pageTitle ?? (
+                            <Text value={properties?.title} block={block} />
+                          )}
+                        </h1>
+                      </header>
+
+                      {(block.type === 'collection_view_page' ||
+                        (block.type === 'page' &&
+                          block.parent_table === 'collection')) && (
+                        <components.Collection block={block} ctx={ctx} />
+                      )}
+
+                      {block.type !== 'collection_view_page' && (
+                        <div
+                          className={cs(
+                            'notion-page-content',
+                            hasAside && 'notion-page-content-has-aside',
+                            hasToc && 'notion-page-content-has-toc'
+                          )}
+                        >
+                          {children}
+
+                          {hasAside && (
+                            <PageAside
+                              toc={toc}
+                              activeSection={activeSection}
+                              setActiveSection={setActiveSection}
+                              hasToc={hasToc}
+                              hasAside={hasAside}
+                              pageAside={pageAside}
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      {pageFooter}
+                    </article>
                   </main>
 
                   {footer}
