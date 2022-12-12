@@ -468,14 +468,14 @@ export const Block: React.FC<BlockProps> = (props) => {
     case 'gist':
     // fallthrough
     case 'video':
-      return <AssetWrapper blockId={blockId} block={block} />
+      return <AssetWrapper block={block} />
 
     case 'drive': {
       const properties = block.format?.drive_properties
       if (!properties) {
         //check if this drive actually needs to be embeded ex. google sheets.
         if (block.format?.display_source) {
-          return <AssetWrapper blockId={blockId} block={block} />
+          return <AssetWrapper block={block} />
         }
       }
 
