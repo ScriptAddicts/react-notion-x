@@ -4,16 +4,14 @@ import { BaseContentBlock, Block } from 'notion-types'
 import { parsePageId } from 'notion-utils'
 
 import { useNotionContext } from '..'
-import { cs } from '../utils'
 import { Asset } from './asset'
 import { Text } from './text'
 
 const urlStyle = { width: '100%' }
 
 export const AssetWrapper: React.FC<{
-  blockId: string
   block: Block
-}> = ({ blockId, block }) => {
+}> = ({ block }) => {
   const value = block as BaseContentBlock
   const { components, mapPageUrl, rootDomain, zoom } = useNotionContext()
 
@@ -31,22 +29,13 @@ export const AssetWrapper: React.FC<{
   }
 
   const figure = (
-    <figure
-      className={cs(
-        'notion-asset-wrapper',
-        `notion-asset-wrapper-${block.type}`,
-        value.format?.block_full_width && 'notion-asset-wrapper-full',
-        blockId
+    <Asset block={value} zoomable={zoom && !isURL}>
+      {value?.properties?.caption && !isURL && (
+        <figcaption className='notion-asset-caption'>
+          <Text value={value.properties.caption} block={block} />
+        </figcaption>
       )}
-    >
-      <Asset block={value} zoomable={zoom && !isURL}>
-        {value?.properties?.caption && !isURL && (
-          <figcaption className='notion-asset-caption'>
-            <Text value={value.properties.caption} block={block} />
-          </figcaption>
-        )}
-      </Asset>
-    </figure>
+    </Asset>
   )
 
   // allows for an image to be a link
