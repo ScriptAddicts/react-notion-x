@@ -223,13 +223,7 @@ export const Block: React.FC<BlockProps> = (props) => {
                       )}
 
                       {block.type !== 'collection_view_page' && (
-                        <div
-                          className={cs(
-                            'notion-page-content',
-                            hasAside && 'notion-page-content-has-aside',
-                            hasToc && 'notion-page-content-has-toc'
-                          )}
-                        >
+                        <>
                           {children}
 
                           {hasAside && (
@@ -242,7 +236,7 @@ export const Block: React.FC<BlockProps> = (props) => {
                               pageAside={pageAside}
                             />
                           )}
-                        </div>
+                        </>
                       )}
 
                       {pageFooter}
