@@ -37,7 +37,7 @@ export const defaultMapImageUrl = (
     // ignore invalid urls
   }
 
-  if (!url.startsWith('https://static.talarian.io')) {
+  if (!url.startsWith('https://')) {
     if (url.startsWith('/images')) {
       url = `https://www.notion.so${url}`
     }
