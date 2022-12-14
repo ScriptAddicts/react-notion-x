@@ -147,6 +147,16 @@ export const NotionRenderer: React.FC<{
       // add the id to the wrapped new .value.content
       wrappedRecordMap.block[firstKey].value.content.push(currentItemKey)
     }
+
+    // Notion adds an empty text block at the end of the content, remove it
+    if (
+      +i === origContentArray.length - 1 &&
+      currentItemObj.value.type === 'text' &&
+      !currentItemObj.properties &&
+      !currentItemObj.content?.length
+    ) {
+      wrappedRecordMap.block[firstKey].value.content.splice(-1, 1)
+    }
   }
 
   return (
