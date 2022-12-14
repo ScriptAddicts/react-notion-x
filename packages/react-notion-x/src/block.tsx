@@ -148,105 +148,89 @@ export const Block: React.FC<BlockProps> = (props) => {
           const hasPageCover = pageCover || page_cover
 
           return (
-            <div
-              className={cs(
-                'notion',
-                'notion-app',
-                darkMode ? 'dark-mode' : 'light-mode',
-                blockId,
-                className
-              )}
-            >
-              <div className='notion-viewport' />
+            <>
+              {!disableHeader && <components.Header block={block} />}
+              {header}
 
-              <div className='notion-frame'>
-                {!disableHeader && <components.Header block={block} />}
-                {header}
-
-                <div className='notion-page-scroller'>
-                  {hasPageCover &&
-                    (pageCover ? (
-                      pageCover
-                    ) : (
-                      <div className='notion-page-cover-wrapper'>
-                        <LazyImage
-                          src={mapImageUrl(page_cover, block)}
-                          alt={getTextContent(properties?.title)}
-                          priority={true}
-                          className='notion-page-cover'
-                          style={pageCoverStyle}
-                        />
-                      </div>
-                    ))}
-
-                  <main
-                    className={cs(
-                      'notion-page',
-                      hasPageCover
-                        ? 'notion-page-has-cover'
-                        : 'notion-page-no-cover',
-                      page_icon
-                        ? 'notion-page-has-icon'
-                        : 'notion-page-no-icon',
-                      isPageIconUrl
-                        ? 'notion-page-has-image-icon'
-                        : 'notion-page-has-text-icon',
-                      'notion-full-page',
-                      page_full_width && 'notion-full-width',
-                      page_small_text && 'notion-small-text',
-                      bodyClassName
-                    )}
-                  >
-                    <article>
-                      <header>
-                        {page_icon && (
-                          <PageIcon
-                            block={block}
-                            defaultIcon={defaultPageIcon}
-                            inline={false}
+              <main
+                className={cs(
+                  'notion-page',
+                  hasPageCover
+                    ? 'notion-page-has-cover'
+                    : 'notion-page-no-cover',
+                  page_icon ? 'notion-page-has-icon' : 'notion-page-no-icon',
+                  isPageIconUrl
+                    ? 'notion-page-has-image-icon'
+                    : 'notion-page-has-text-icon',
+                  'notion-full-page',
+                  page_full_width && 'notion-full-width',
+                  page_small_text && 'notion-small-text',
+                  bodyClassName
+                )}
+              >
+                <article>
+                  <header>
+                    {hasPageCover &&
+                      (pageCover ? (
+                        pageCover
+                      ) : (
+                        <figure className='notion-page-cover-wrapper'>
+                          <LazyImage
+                            src={mapImageUrl(page_cover, block)}
+                            alt={getTextContent(properties?.title)}
+                            priority={true}
+                            className='notion-page-cover'
+                            style={pageCoverStyle}
                           />
-                        )}
+                        </figure>
+                      ))}
 
-                        {pageHeader}
+                    {page_icon && (
+                      <PageIcon
+                        block={block}
+                        defaultIcon={defaultPageIcon}
+                        inline={false}
+                      />
+                    )}
 
-                        <h1 className='notion-title'>
-                          {pageTitle ?? (
-                            <Text value={properties?.title} block={block} />
-                          )}
-                        </h1>
-                      </header>
+                    {pageHeader}
 
-                      {(block.type === 'collection_view_page' ||
-                        (block.type === 'page' &&
-                          block.parent_table === 'collection')) && (
-                        <components.Collection block={block} ctx={ctx} />
+                    <h1 className='notion-title'>
+                      {pageTitle ?? (
+                        <Text value={properties?.title} block={block} />
                       )}
+                    </h1>
+                  </header>
 
-                      {block.type !== 'collection_view_page' && (
-                        <>
-                          {children}
+                  {(block.type === 'collection_view_page' ||
+                    (block.type === 'page' &&
+                      block.parent_table === 'collection')) && (
+                    <components.Collection block={block} ctx={ctx} />
+                  )}
 
-                          {hasAside && (
-                            <PageAside
-                              toc={toc}
-                              activeSection={activeSection}
-                              setActiveSection={setActiveSection}
-                              hasToc={hasToc}
-                              hasAside={hasAside}
-                              pageAside={pageAside}
-                            />
-                          )}
-                        </>
+                  {block.type !== 'collection_view_page' && (
+                    <>
+                      {children}
+
+                      {hasAside && (
+                        <PageAside
+                          toc={toc}
+                          activeSection={activeSection}
+                          setActiveSection={setActiveSection}
+                          hasToc={hasToc}
+                          hasAside={hasAside}
+                          pageAside={pageAside}
+                        />
                       )}
+                    </>
+                  )}
 
-                      {pageFooter}
-                    </article>
-                  </main>
+                  {pageFooter}
+                </article>
+              </main>
 
-                  {footer}
-                </div>
-              </div>
-            </div>
+              {footer}
+            </>
           )
         } else {
           return (
