@@ -396,7 +396,7 @@ export const Block: React.FC<BlockProps> = (props) => {
 
     case 'text': {
       if (!block.properties && !block.content?.length) {
-        return <div className={cs('notion-blank', blockId)}>&nbsp;</div>
+        return null
       }
 
       const blockColor = block.format?.block_color
