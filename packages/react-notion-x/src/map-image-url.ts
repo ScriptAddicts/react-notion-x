@@ -37,13 +37,15 @@ export const defaultMapImageUrl = (
     // ignore invalid urls
   }
 
-  if (url.startsWith('/images')) {
-    url = `https://www.notion.so${url}`
-  }
+  if (!url.startsWith('https://')) {
+    if (url.startsWith('/images')) {
+      url = `https://www.notion.so${url}`
+    }
 
-  url = `https://www.notion.so${
-    url.startsWith('/image') ? url : `/image/${encodeURIComponent(url)}`
-  }`
+    url = `https://www.notion.so${
+      url.startsWith('/image') ? url : `/image/${encodeURIComponent(url)}`
+    }`
+  }
 
   const notionImageUrlV2 = new URL(url)
   let table = block.parent_table === 'space' ? 'block' : block.parent_table

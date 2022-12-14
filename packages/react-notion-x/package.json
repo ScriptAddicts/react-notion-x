@@ -1,6 +1,6 @@
 {
   "name": "@paultalarian/react-notion-x",
-  "version": "6.15.16",
+  "version": "6.15.19",
   "type": "module",
   "description": "Fast and accurate React renderer for Notion.",
   "publishConfig": {

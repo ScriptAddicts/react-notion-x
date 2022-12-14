@@ -44,6 +44,8 @@ interface BlockProps {
   disableHeader?: boolean
 
   children?: React.ReactNode
+
+  author?: any
 }
 
 // TODO: use react state instead of a global for this
@@ -85,7 +87,8 @@ export const Block: React.FC<BlockProps> = (props) => {
     pageAside,
     pageCover,
     hideBlockId,
-    disableHeader
+    disableHeader,
+    author
   } = props
 
   if (!block) {
@@ -147,6 +150,17 @@ export const Block: React.FC<BlockProps> = (props) => {
           const hasAside = (hasToc || pageAside) && !page_full_width
           const hasPageCover = pageCover || page_cover
 
+          // Creation date of the page
+          const created_time =
+            recordMap.block[Object.keys(recordMap.block)[0]].value.created_time
+          const created_time_date = new Date(created_time)
+          const created_time_format =
+            created_time_date.getDate() +
+            '/' +
+            (created_time_date.getMonth() + 1) +
+            '/' +
+            created_time_date.getFullYear()
+
           return (
             <>
               {!disableHeader && <components.Header block={block} />}
@@ -193,13 +207,19 @@ export const Block: React.FC<BlockProps> = (props) => {
                       />
                     )}
 
-                    {pageHeader}
-
                     <h1 className='notion-title'>
                       {pageTitle ?? (
                         <Text value={properties?.title} block={block} />
                       )}
                     </h1>
+                    <aside>
+                      <time>{created_time_format}</time>
+                      {author?.name && (
+                        <p>
+                          {author.label} {author.name}
+                        </p>
+                      )}
+                    </aside>
                   </header>
 
                   {(block.type === 'collection_view_page' ||
@@ -446,14 +466,14 @@ export const Block: React.FC<BlockProps> = (props) => {
     case 'gist':
     // fallthrough
     case 'video':
-      return <AssetWrapper blockId={blockId} block={block} />
+      return <AssetWrapper block={block} />
 
     case 'drive': {
       const properties = block.format?.drive_properties
       if (!properties) {
         //check if this drive actually needs to be embeded ex. google sheets.
         if (block.format?.display_source) {
-          return <AssetWrapper blockId={blockId} block={block} />
+          return <AssetWrapper block={block} />
         }
       }
 

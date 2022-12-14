@@ -55,6 +55,8 @@ export const NotionRenderer: React.FC<{
   blockId?: string
   hideBlockId?: boolean
   disableHeader?: boolean
+
+  author?: any
 }> = ({
   components,
   recordMap,
@@ -74,6 +76,7 @@ export const NotionRenderer: React.FC<{
   defaultPageIcon,
   defaultPageCover,
   defaultPageCoverPosition,
+  author,
   ...rest
 }) => {
   const zoom = React.useMemo(
@@ -181,7 +184,7 @@ export const NotionRenderer: React.FC<{
       defaultPageCoverPosition={defaultPageCoverPosition}
       zoom={zoom}
     >
-      <NotionBlockRenderer {...rest} />
+      <NotionBlockRenderer author={author} {...rest} />
     </NotionContextProvider>
   )
 }
@@ -196,6 +199,8 @@ export const NotionBlockRenderer: React.FC<{
   blockId?: string
   hideBlockId?: boolean
   level?: number
+
+  author?: any
 }> = ({ level = 0, blockId, ...props }) => {
   const { recordMap } = useNotionContext()
   const id = blockId || Object.keys(recordMap.block)[0]
@@ -226,6 +231,8 @@ const BlockChildrenRenderer: React.FC<{
   block: BlockType
   hideBlockId?: boolean
   level?: number
+
+  author?: any
 }> = ({ level, block, ...props }) => {
   const { recordMap } = useNotionContext()
   const contentNodes = []

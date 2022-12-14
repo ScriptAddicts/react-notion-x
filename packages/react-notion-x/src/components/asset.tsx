@@ -269,6 +269,7 @@ export const Asset: React.FC<{
         alt={alt}
         zoomable={zoomable}
         height={style.height as number}
+        width={style.width as number}
         style={assetStyle}
       />
     )
@@ -276,10 +277,10 @@ export const Asset: React.FC<{
 
   return (
     <>
-      <div style={style}>
+      <figure style={style}>
         {content}
         {block.type === 'image' && children}
-      </div>
+      </figure>
 
       {block.type !== 'image' && children}
     </>
