@@ -151,9 +151,8 @@ export const Block: React.FC<BlockProps> = (props) => {
           const hasPageCover = pageCover || page_cover
 
           // Creation date of the page
-          const created_time =
-            recordMap.block[Object.keys(recordMap.block)[0]].value.created_time
-          const created_time_date = new Date(created_time)
+          // also available: last_edited_time
+          const created_time_date = new Date(block.created_time)
           const created_time_format =
             created_time_date.getDate() +
             '/' +
