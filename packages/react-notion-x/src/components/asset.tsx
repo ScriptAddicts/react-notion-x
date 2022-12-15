@@ -40,7 +40,7 @@ export const Asset: React.FC<{
     position: 'relative',
     display: 'flex',
     justifyContent: 'center',
-    alignSelf: 'center',
+    alignItems: 'center',
     width: '100%',
     maxWidth: '100%',
     flexDirection: 'column'
@@ -90,15 +90,15 @@ export const Asset: React.FC<{
     } else {
       switch (block.format?.block_alignment) {
         case 'center': {
-          style.alignSelf = 'center'
+          style.alignItems = 'center'
           break
         }
         case 'left': {
-          style.alignSelf = 'start'
+          style.alignItems = 'flex-start'
           break
         }
         case 'right': {
-          style.alignSelf = 'end'
+          style.alignItems = 'flex-end'
           break
         }
       }
@@ -274,6 +274,9 @@ export const Asset: React.FC<{
       />
     )
   }
+
+  // Override the width of the figure to handle alignment
+  style.width = '100%'
 
   return (
     <>
