@@ -92,12 +92,7 @@ export const NotionRenderer: React.FC<{
 
   const wrappedRecordMap = structuredClone(recordMap)
 
-  let firstKey = ''
-
-  for (const prop in wrappedRecordMap.block) {
-    firstKey = prop
-    break
-  }
+  const firstKey = Object.keys(wrappedRecordMap.block)[0]
 
   // take the main block .value.content (array of block ids)
   const origContentArray = wrappedRecordMap.block[firstKey].value.content
