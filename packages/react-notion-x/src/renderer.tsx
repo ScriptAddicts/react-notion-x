@@ -147,14 +147,14 @@ export const NotionRenderer: React.FC<{
     }
 
     // Notion adds an empty text block at the end of the content, remove it
-    if (
-      +i === origContentArray.length - 1 &&
-      currentItemObj.value.type === 'text' &&
-      !currentItemObj.properties &&
-      !currentItemObj.content?.length
-    ) {
-      wrappedRecordMap.block[firstKey].value.content.splice(-1, 1)
-    }
+    // if (
+    //   +i === origContentArray.length - 1 &&
+    //   currentItemObj.value.type === 'text' &&
+    //   !currentItemObj.properties &&
+    //   !currentItemObj.content?.length
+    // ) {
+    //   wrappedRecordMap.block[firstKey].value.content.splice(-1, 1)
+    // }
   }
 
   return (
