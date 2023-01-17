@@ -205,6 +205,9 @@ export const Asset: React.FC<{
         const youtubeVideoId: string | null =
           block.type === 'video' ? getYoutubeId(src) : null
         // console.log({ youtubeVideoId, src, format: block.format, style })
+        assetStyle.width = style.width
+        assetStyle.height = (Number(style.width) * 9) / 16
+        style.paddingBottom = undefined
 
         if (youtubeVideoId) {
           content = (
