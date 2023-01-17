@@ -416,13 +416,13 @@
 }
 .notion-title + aside {
   margin-bottom: 20px;
-  font-size: .9em;
+  font-size: 0.9em;
   display: flex;
   gap: 6px;
   color: var(--fg-color-3);
 }
 .notion-title + aside > time:after {
-  content: "·";
+  content: '·';
   margin-left: 6px;
 }
 
@@ -2670,7 +2670,6 @@ svg.notion-page-icon {
 
 .notion-yt-lite {
   background-color: #000;
-  position: absolute;
   width: 100%;
   height: 100%;
   display: block;
@@ -2758,7 +2757,7 @@ svg.notion-page-icon {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 120%
+  width: 120%;
 }
 
 .notion-collection-view-tabs-content-item {
@@ -2808,9 +2807,9 @@ svg.notion-page-icon {
 }
 
 .nested-form-link {
-  background: none!important;
+  background: none !important;
   border: none;
-  padding: 0!important;
+  padding: 0 !important;
   text-decoration: underline;
   cursor: pointer;
 }

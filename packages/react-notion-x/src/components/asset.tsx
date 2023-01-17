@@ -210,13 +210,7 @@ export const Asset: React.FC<{
         style.paddingBottom = undefined
 
         if (youtubeVideoId) {
-          content = (
-            <LiteYouTubeEmbed
-              id={youtubeVideoId}
-              style={assetStyle}
-              className='notion-asset-object-fit'
-            />
-          )
+          content = <LiteYouTubeEmbed id={youtubeVideoId} style={assetStyle} />
         } else if (block.type === 'gist') {
           if (!src.endsWith('.pibb')) {
             src = `${src}.pibb`
