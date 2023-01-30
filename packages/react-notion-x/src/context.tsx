@@ -75,9 +75,7 @@ export interface PartialNotionContext {
   zoom?: any
 }
 
-const DefaultLink: React.FC = (props) => (
-  <a target='_blank' rel='noopener noreferrer' {...props} />
-)
+const DefaultLink: React.FC = (props) => <a {...props} />
 const DefaultLinkMemo = React.memo(DefaultLink)
 const DefaultPageLink: React.FC = (props) => <a {...props} />
 const DefaultPageLinkMemo = React.memo(DefaultPageLink)
