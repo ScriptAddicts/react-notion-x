@@ -684,7 +684,10 @@ export const Block: React.FC<BlockProps> = (props) => {
             <a
               key={tocItem.id}
               href={`#${uuidToId(tocItem.id)}`}
-              className='notion-table-of-contents-item'
+              className={cs(
+                'notion-table-of-contents-item',
+                `notion-table-of-contents-${tocItem.indentLevel}`
+              )}
             >
               <span
                 className='notion-table-of-contents-item-body'
