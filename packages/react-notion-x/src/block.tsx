@@ -680,26 +680,30 @@ export const Block: React.FC<BlockProps> = (props) => {
             blockId
           )}
         >
-          {toc.map((tocItem) => (
-            <a
-              key={tocItem.id}
-              href={`#${uuidToId(tocItem.id)}`}
-              className={cs(
-                'notion-table-of-contents-item',
-                `notion-table-of-contents-${tocItem.indentLevel}`
-              )}
-            >
-              <span
-                className='notion-table-of-contents-item-body'
-                style={{
-                  display: 'inline-block',
-                  marginLeft: tocItem.indentLevel * 24
-                }}
-              >
-                {tocItem.text}
-              </span>
-            </a>
-          ))}
+          {toc.map((tocItem) => {
+            if (!tocItem.indentLevel) {
+              return (
+                <a
+                  key={tocItem.id}
+                  href={`#${uuidToId(tocItem.id)}`}
+                  className={cs(
+                    'notion-table-of-contents-item',
+                    `notion-table-of-contents-${tocItem.indentLevel}`
+                  )}
+                >
+                  <span
+                    className='notion-table-of-contents-item-body'
+                    style={{
+                      display: 'inline-block',
+                      marginLeft: tocItem.indentLevel * 24
+                    }}
+                  >
+                    {tocItem.text}
+                  </span>
+                </a>
+              )
+            }
+          })}
         </div>
       )
     }
