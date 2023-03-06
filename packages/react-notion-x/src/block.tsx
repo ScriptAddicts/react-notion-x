@@ -151,14 +151,14 @@ export const Block: React.FC<BlockProps> = (props) => {
           const hasPageCover = pageCover || page_cover
 
           // Creation date of the page
-          // also available: last_edited_time
-          const created_time_date = new Date(block.created_time)
-          const created_time_format =
-            created_time_date.getDate() +
+          // also available: created_time
+          const edited_time_date = new Date(block.last_edited_time)
+          const edited_time_format =
+            edited_time_date.getDate() +
             '/' +
-            (created_time_date.getMonth() + 1) +
+            (edited_time_date.getMonth() + 1) +
             '/' +
-            created_time_date.getFullYear()
+            edited_time_date.getFullYear()
 
           return (
             <>
@@ -212,7 +212,7 @@ export const Block: React.FC<BlockProps> = (props) => {
                       )}
                     </h1>
                     <aside>
-                      <time>{created_time_format}</time>
+                      <time>{edited_time_format}</time>
                       {author?.name && (
                         <p>
                           {author.label} {author.name}
