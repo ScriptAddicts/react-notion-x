@@ -152,12 +152,26 @@ export const Block: React.FC<BlockProps> = (props) => {
 
           // Creation date of the page
           // also available: created_time
+          const nthNumber = (number) => {
+            if (number > 3 && number < 21) return 'th'
+            switch (number % 10) {
+              case 1:
+                return 'st'
+              case 2:
+                return 'nd'
+              case 3:
+                return 'rd'
+              default:
+                return 'th'
+            }
+          }
           const edited_time_date = new Date(block.last_edited_time)
           const edited_time_format =
+            edited_time_date.toLocaleString('default', { month: 'long' }) +
+            ' ' +
             edited_time_date.getDate() +
-            '/' +
-            (edited_time_date.getMonth() + 1) +
-            '/' +
+            nthNumber(edited_time_date.getDate()) +
+            ' ' +
             edited_time_date.getFullYear()
 
           return (
