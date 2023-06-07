@@ -472,19 +472,6 @@
   margin-top: 1em;
 }
 
-.notion-h:hover .notion-hash-link {
-  opacity: 1;
-}
-
-.notion-hash-link {
-  opacity: 0;
-  text-decoration: none;
-  float: left;
-  margin-left: -20px;
-  padding-right: 4px;
-  fill: var(--fg-color-icon);
-}
-
 .notion-page-cover {
   display: block;
   object-fit: cover;

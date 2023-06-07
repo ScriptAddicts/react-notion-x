@@ -22,7 +22,6 @@ import { PageTitle } from './components/page-title'
 import { SyncPointerBlock } from './components/sync-pointer-block'
 import { Text } from './components/text'
 import { useNotionContext } from './context'
-import { LinkIcon } from './icons/link-icon'
 import { cs, isUrl } from './utils'
 
 interface BlockProps {
@@ -321,8 +320,6 @@ export const Block: React.FC<BlockProps> = (props) => {
 
       const blockColor = block.format?.block_color
       const id = uuidToId(block.id)
-      const title =
-        getTextContent(block.properties.title) || `Notion Header ${id}`
 
       // we use a cache here because constructing the ToC is non-trivial
       let indentLevel = tocIndentLevelCache[block.id]
@@ -362,12 +359,6 @@ export const Block: React.FC<BlockProps> = (props) => {
       const innerHeader = (
         <span>
           <div id={id} className='notion-header-anchor' />
-          {!block.format?.toggleable && (
-            <a className='notion-hash-link' href={`#${id}`} title={title}>
-              <LinkIcon />
-            </a>
-          )}
-
           <span className='notion-h-title'>
             <Text value={block.properties.title} block={block} />
           </span>
