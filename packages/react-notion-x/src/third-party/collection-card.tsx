@@ -55,7 +55,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
         coverContent = (
           <LazyImage
             src={src}
-            alt={caption || 'notion image'}
+            alt={caption}
             style={{
               objectFit: coverAspect
             }}

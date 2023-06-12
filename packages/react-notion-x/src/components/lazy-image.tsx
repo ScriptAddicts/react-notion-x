@@ -62,6 +62,9 @@ export const LazyImage: React.FC<{
     [zoomable, attachZoom]
   )
 
+  // Forcing prop removal from html
+  alt = alt || undefined
+
   if (previewImage) {
     const aspectRatio = previewImage.originalHeight / previewImage.originalWidth
 
